@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBI API — Stable, Affordable AI API Proxy</title>
+    <meta name="description" content="Direct access to OpenAI, Claude, DeepSeek, and more. Built for developers who need reliable AI API access.">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f0f18;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border-card: rgba(255, 255, 255, 0.07);
+            --border-hover: rgba(255, 255, 255, 0.14);
+            --text-primary: #e8e8ed;
+            --text-secondary: #b0b0bb;
+            --text-muted: #7a7a8a;
+            --accent-blue: #2563eb;
+            --accent-purple: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+            --accent-gradient-hover: linear-gradient(135deg, #3b7bf5, #9254f7);
+            --accent-glow: rgba(124, 58, 237, 0.3);
+            --glass-blur: 20px;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, Oxygen, Ubuntu, sans-serif;
+            --max-width: 1200px;
+            --header-height: 68px;
+            --shadow-glow: 0 0 40px rgba(124, 58, 237, 0.15), 0 0 80px rgba(37, 99, 235, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 背景网格系统 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+            background-size: 56px 56px;
+            background-position: center center;
+        }
+
+        /* 动态光晕球体 (环境粒子效果) */
+        .ambient-orb {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.4;
+            animation: orbDrift 18s ease-in-out infinite;
+        }
+        .ambient-orb--top {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
+            top: -180px;
+            right: -120px;
+            animation-delay: 0s;
+        }
+        .ambient-orb--bottom {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, transparent 70%);
+            bottom: -140px;
+            left: -100px;
+            animation-delay: -9s;
+        }
+        .ambient-orb--mid {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 55%;
+            animation-delay: -5s;
+            animation-duration: 22s;
+        }
+
+        @keyframes orbDrift {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(40px, -30px) scale(1.1);
+            }
+            50% {
+                transform: translate(-20px, 25px) scale(0.9);
+            }
+            75% {
+                transform: translate(-35px, -15px) scale(1.05);
+            }
+        }
+
+        /* 导航栏 - 透明毛玻璃效果 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: var(--header-height);
+            background: rgba(10, 10, 15, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transition: var(--transition-smooth);
+        }
+        .header.scrolled {
+            background: rgba(10, 10, 15, 0.88);
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+            z-index: 1001;
+            white-space: nowrap;
+            transition: opacity var(--transition-fast);
+        }
+        .logo:hover {
+            opacity: 0.9;
+        }
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+            white-space: nowrap;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .nav-links a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+            font-weight: 600;
+        }
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--accent-gradient);
+        }
+
+        /* 移动端汉堡菜单 */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            background: none;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            transition: var(--transition-fast);
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: var(--transition-fast);
+            transform-origin: center;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            padding-top: var(--header-height);
+            min-height: calc(100vh - 80px);
+        }
+
+        /* 页面切换动画 */
+        .page-section {
+            display: none;
+            animation: fadeSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        .container--narrow {
+            max-width: 820px;
+        }
+
+        /* 首页 Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 24px 40px;
+            position: relative;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #a78bfa;
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #e8e8ed 0%, #c5c5d4 40%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 620px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+        .btn-cta {
+            display: inline-block;
+            padding: 14px 36px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            background: var(--accent-gradient);
+            transition: var(--transition-smooth);
+            box-shadow: 0 8px 32px var(--accent-glow);
+            cursor: pointer;
+            border: none;
+            letter-spacing: -0.01em;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-cta:hover {
+            background: var(--accent-gradient-hover);
+            box-shadow: 0 12px 40px rgba(124, 58, 237, 0.45);
+            transform: translateY(-2px);
+        }
+
+        /* 按钮涟漪动画 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* 特性卡片 (毛玻璃 + 发光边框) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 48px;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow), 0 0 20px rgba(37, 99, 235, 0.1);
+        }
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 14px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* 技术栈图标 */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 36px;
+        }
+        .tech-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 16px;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            border: 1px solid var(--border-card);
+            background: rgba(255, 255, 255, 0.025);
+            transition: var(--transition-fast);
+            cursor: default;
+        }
+        .tech-tag:hover {
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-1px);
+        }
+        .tech-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .tech-dot--openai {
+            background: #10a37f;
+            box-shadow: 0 0 8px rgba(16, 163, 127, 0.6);
+        }
+        .tech-dot--anthropic {
+            background: #d97757;
+            box-shadow: 0 0 8px rgba(217, 119, 87, 0.6);
+        }
+        .tech-dot--deepseek {
+            background: #4d8bf7;
+            box-shadow: 0 0 8px rgba(77, 139, 247, 0.6);
+        }
+        .tech-dot--google {
+            background: #4285f4;
+            box-shadow: 0 0 8px rgba(66, 133, 244, 0.6);
+        }
+
+        /* 定价卡片 */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            align-items: stretch;
+        }
+        .pricing-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-xl);
+            padding: 32px 24px;
+            transition: var(--transition-smooth);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            overflow: hidden;
+        }
+        .pricing-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
+        }
+        .pricing-card--featured {
+            border-color: rgba(124, 58, 237, 0.4);
+            box-shadow: 0 0 50px rgba(124, 58, 237, 0.25), 0 0 80px rgba(37, 99, 235, 0.15);
+            transform: scale(1.03);
+            z-index: 2;
+        }
+        .pricing-card--featured:hover {
+            transform: scale(1.03) translateY(-4px);
+            border-color: rgba(124, 58, 237, 0.6);
+            box-shadow: 0 0 70px rgba(124, 58, 237, 0.4);
+        }
+        .pricing-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-gradient);
+            color: #fff;
+            padding: 5px 18px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 16px var(--accent-glow);
+            white-space: nowrap;
+        }
+        .pricing-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .pricing-amount {
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 8px 0;
+            background: linear-gradient(135deg, #e8e8ed, #c5c5d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .pricing-period {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin: 20px 0 24px;
+            flex-grow: 1;
+        }
+        .pricing-features li {
+            padding: 7px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .pricing-features li::before {
+            content: '✓';
+            color: #7c3aed;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .btn-subscribe {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            letter-spacing: -0.01em;
+            background: var(--accent-gradient);
+            box-shadow: 0 4px 16px var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-subscribe:hover {
+            background: var(--accent-gradient-hover);
+            box-shadow: 0 8px 28px rgba(124, 58, 237, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-subscribe--outline {
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            box-shadow: none;
+        }
+        .btn-subscribe--outline:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
+        }
+
+        /* 法律文本页面 */
+        .legal-content h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 28px 0 12px;
+            letter-spacing: -0.02em;
+        }
+        .legal-content h2:first-child {
+            margin-top: 0;
+        }
+        .legal-content h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 20px 0 8px;
+            color: #d0d0da;
+        }
+        .legal-content p {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .legal-content ul {
+            margin: 8px 0 16px 20px;
+            color: var(--text-secondary);
+        }
+        .legal-content ul li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+        .legal-content .last-updated {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* Toast 消息提示 */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(30, 30, 40, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 2000;
+            pointer-events: none;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            letter-spacing: -0.01em;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success {
+            border-color: rgba(124, 58, 237, 0.5);
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 260px;
+                height: 100vh;
+                flex-direction: column;
+                background: rgba(15, 15, 22, 0.96);
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+                padding: 90px 28px 40px;
+                gap: 6px;
+                transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                border-left: 1px solid rgba(255, 255, 255, 0.06);
+                box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+            }
+            .nav-links.open {
+                right: 0;
+            }
+            .nav-links a {
+                font-size: 0.95rem;
+                padding: 10px 16px;
+                width: 100%;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .pricing-card--featured {
+                transform: scale(1);
+            }
+            .pricing-card--featured:hover {
+                transform: translateY(-4px);
+            }
+            .hero h1 {
+                font-size: 1.7rem;
+            }
+            .hero p {
+                font-size: 0.95rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .header-inner {
+                padding: 0 16px;
+            }
+            .container {
+                padding: 24px 14px;
+            }
+            .hero {
+                padding: 40px 14px 24px;
+            }
+            .tech-stack {
+                gap: 8px;
+            }
+            .tech-tag {
+                padding: 8px 12px;
+                font-size: 0.78rem;
+            }
+        }
+
+        /* 移动端菜单遮罩层 */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            transition: opacity 0.3s ease;
+        }
+        .nav-overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 环境光效球体 -->
+    <div class="ambient-orb ambient-orb--top" aria-hidden="true"></div>
+    <div class="ambient-orb ambient-orb--bottom" aria-hidden="true"></div>
+    <div class="ambient-orb ambient-orb--mid" aria-hidden="true"></div>
+
+    <!-- 移动端菜单遮罩 -->
+    <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+    <!-- 顶部导航栏 -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="#home" class="logo" aria-label="CBI API Home">
+                <span class="logo-icon" aria-hidden="true">CB</span>
+                <span>CBI API</span>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav aria-label="Main navigation">
+                <ul class="nav-links" id="navLinks" role="menubar">
+                    <li role="none"><a href="#home" role="menuitem" class="active" data-page="home">Home</a></li>
+                    <li role="none"><a href="#pricing" role="menuitem" data-page="pricing">Pricing</a></li>
+                    <li role="none"><a href="#terms" role="menuitem" data-page="terms">Terms</a></li>
+                    <li role="none"><a href="#privacy" role="menuitem" data-page="privacy">Privacy</a></li>
+                    <li role="none"><a href="#refund" role="menuitem" data-page="refund">Refund</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content" id="mainContent">
+
+        <!-- 首页 -->
+        <section class="page-section active" id="page-home" aria-labelledby="home-heading">
+            <div class="hero">
+                <span class="hero-badge">🚀 AI API Proxy Service</span>
+                <h1 id="home-heading">CBI API — Stable, Affordable AI API Proxy</h1>
+                <p>Direct access to OpenAI, Claude, DeepSeek, and more. Built for developers who need reliable AI API access without the overhead.</p>
+                <a href="#pricing" class="btn-cta">Get Started Free</a>
+
+                <div class="tech-stack" aria-label="Supported AI providers">
+                    <span class="tech-tag" aria-label="OpenAI">
+                        <span class="tech-dot tech-dot--openai" aria-hidden="true"></span> OpenAI
+                    </span>
+                    <span class="tech-tag" aria-label="Anthropic Claude">
+                        <span class="tech-dot tech-dot--anthropic" aria-hidden="true"></span> Anthropic Claude
+                    </span>
+                    <span class="tech-tag" aria-label="DeepSeek">
+                        <span class="tech-dot tech-dot--deepseek" aria-hidden="true"></span> DeepSeek
+                    </span>
+                    <span class="tech-tag" aria-label="Google AI">
+                        <span class="tech-dot tech-dot--google" aria-hidden="true"></span> Google AI
+                    </span>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🛡️</div>
+                        <h3>99.9% Uptime</h3>
+                        <p>Enterprise-grade infrastructure with automatic failover across multiple regions. Your requests are always routed to the healthiest endpoint.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">💰</div>
+                        <h3>50% Lower Cost</h3>
+                        <p>Optimized intelligent routing reduces your API costs by up to 50%. Pay only for what you use with no hidden fees or markup surprises.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">⚡</div>
+                        <h3>Instant Setup</h3>
+                        <p>One API key, universal compatibility with all major AI models. Drop-in replacement — integrate in under 5 minutes with zero code changes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 定价页 -->
+        <section class="page-section" id="page-pricing" aria-labelledby="pricing-heading">
+            <div class="container">
+                <div class="hero" style="padding-top: 20px;">
+                    <span class="hero-badge">💎 Pricing Plans</span>
+                    <h1 id="pricing-heading" style="font-size: clamp(1.6rem, 4vw, 2.4rem);">Choose Your Plan</h1>
+                    <p>All plans include universal API access. Upgrade or downgrade anytime.</p>
+                </div>
+                <div class="pricing-grid">
+                    <!-- Starter -->
+                    <div class="pricing-card">
+                        <h3>Starter</h3>
+                        <div class="pricing-amount">$9.99</div>
+                        <div class="pricing-period">/ month</div>
+                        <ul class="pricing-features">
+                            <li>500K tokens / month</li>
+                            <li>3 API keys</li>
+                            <li>Basic support</li>
+                            <li>99.5% uptime SLA</li>
+                        </ul>
+                        <button class="btn-subscribe btn-subscribe--outline">Subscribe</button>
+                    </div>
+                    <!-- Pro (推荐) -->
+                    <div class="pricing-card pricing-card--featured">
+                        <span class="pricing-badge">⭐ Recommended</span>
+                        <h3>Pro</h3>
+                        <div class="pricing-amount">$29.99</div>
+                        <div class="pricing-period">/ month</div>
+                        <ul class="pricing-features">
+                            <li>5M tokens / month</li>
+                            <li>10 API keys</li>
+                            <li>Priority support</li>
+                            <li>99.9% uptime SLA</li>
+                            <li>Load balancing</li>
+                        </ul>
+                        <button class="btn-subscribe">Subscribe</button>
+                    </div>
+                    <!-- Enterprise -->
+                    <div class="pricing-card">
+                        <h3>Enterprise</h3>
+                        <div class="pricing-amount">$99.99</div>
+                        <div class="pricing-period">/ month</div>
+                        <ul class="pricing-features">
+                            <li>50M tokens / month</li>
+                            <li>Unlimited API keys</li>
+                            <li>Dedicated support</li>
+                            <li>99.99% uptime SLA</li>
+                            <li>Custom routing rules</li>
+                            <li>Dedicated nodes</li>
+                        </ul>
+                        <button class="btn-subscribe btn-subscribe--outline">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 服务条款 -->
+        <section class="page-section" id="page-terms" aria-labelledby="terms-heading">
+            <div class="container container--narrow">
+                <div class="legal-content">
+                    <h2 id="terms-heading">Terms of Service</h2>
+                    <p class="last-updated">Last updated: May 2026</p>
+
+                    <h3>1. Service Overview</h3>
+                    <p>CBI API ("we," "us," or "our") provides an API proxy service that enables developers to access third-party AI models, including but not limited to OpenAI, Anthropic Claude, DeepSeek, and Google AI (collectively, "Third-Party Services"). Our service acts as an intermediary, routing API requests from our customers to these Third-Party Services. We do not own, operate, or control the underlying AI models.</p>
+
+                    <h3>2. Account Registration & Responsibilities</h3>
+                    <p>To use our services, you must register for an account and provide accurate, complete, and current information. You are solely responsible for maintaining the confidentiality of your API keys and account credentials. Any activity that occurs under your account is your responsibility. You must notify us immediately of any unauthorized use of your account or any other breach of security. We reserve the right to suspend or terminate accounts that provide false or misleading information.</p>
+
+                    <h3>3. Acceptable Use Policy</h3>
+                    <p>You agree not to use the CBI API service for any unlawful, harmful, or abusive purposes. Specifically, you shall not:</p>
+                    <ul>
+                        <li>Use the service to generate, distribute, or facilitate illegal content, hate speech, harassment, or material that infringes on intellectual property rights.</li>
+                        <li>Engage in automated scraping, excessive crawling, or any activity that imposes an unreasonable load on our infrastructure.</li>
+                        <li>Attempt to bypass rate limits, circumvent authentication mechanisms, or reverse-engineer any part of the service.</li>
+                        <li>Use the service for any activity that violates the terms of service of the underlying Third-Party Services.</li>
+                        <li>Resell, sublicense, or redistribute the API access without explicit written authorization from us.</li>
+                    </ul>
+                    <p>We reserve the right to investigate and take appropriate action against any account that violates this policy, including immediate suspension or termination without prior notice.</p>
+
+                    <h3>4. Billing & Payment Terms</h3>
+                    <p>All fees are billed in advance on a monthly basis, unless otherwise agreed upon in writing. Payments are due at the start of each billing period. Token usage beyond your plan's allowance may result in overage charges or service throttling, depending on your plan. All prices are listed in US Dollars (USD) and are exclusive of applicable taxes. We reserve the right to modify pricing with 30 days' notice to active subscribers.</p>
+
+                    <h3>5. Service Level Agreement (SLA)</h3>
+                    <p>We strive to maintain the uptime percentages specified in each plan. Our SLA commitments are measured on a monthly basis. If we fail to meet the guaranteed uptime for your plan, you may be eligible for service credits. SLA credits are calculated as a percentage of your monthly fee and must be requested within 14 days of the incident. Details of SLA credit calculations are available upon request.</p>
+
+                    <h3>6. Termination</h3>
+                    <p>Either party may terminate the agreement at any time. Upon termination, your access to the API will be revoked, and any remaining prepaid balance for the current billing period will be handled according to our Refund Policy. We reserve the right to terminate accounts immediately in cases of Terms of Service violations, fraudulent activity, or non-payment. Provisions regarding liability, disclaimers, and any obligations that naturally survive termination shall remain in effect.</p>
+
+                    <h3>7. Disclaimer of Warranties</h3>
+                    <p>The CBI API service is provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, express or implied, regarding the reliability, accuracy, or availability of the service or the Third-Party Services accessed through it. We disclaim all implied warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not guarantee that the service will be uninterrupted, error-free, or completely secure.</p>
+
+                    <h3>8. Limitation of Liability</h3>
+                    <p>To the fullest extent permitted by law, CBI API shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or business opportunities, arising from your use of or inability to use the service. Our total aggregate liability for any claims related to the service shall not exceed the amount paid by you in the 12 months preceding the claim.</p>
+
+                    <h3>9. Governing Law</h3>
+                    <p>These Terms of Service shall be governed by and interpreted in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law principles. Any disputes arising from these terms shall be resolved exclusively in the courts located in Delaware. Users accessing the service from outside the United States are responsible for compliance with local laws.</p>
+
+                    <h3>10. Contact</h3>
+                    <p>For questions regarding these Terms of Service, please contact us at <strong>legal@cbiapi.com</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 隐私政策 -->
+        <section class="page-section" id="page-privacy" aria-labelledby="privacy-heading">
+            <div class="container container--narrow">
+                <div class="legal-content">
+                    <h2 id="privacy-heading">Privacy Policy</h2>
+                    <p class="last-updated">Last updated: May 2026</p>
+
+                    <h3>1. Information We Collect</h3>
+                    <p>When you use CBI API, we collect the following types of information:</p>
+                    <ul>
+                        <li><strong>Account Information:</strong> Your name, email address, company name (if provided), and billing details necessary for payment processing.</li>
+                        <li><strong>Usage Data:</strong> API request metadata, including timestamps, token counts, endpoint usage, and error logs. We do <em>not</em> store the content of your API requests or responses beyond what is necessary for real-time routing.</li>
+                        <li><strong>Technical Data:</strong> IP addresses, browser user-agent strings, and connection timestamps for security and rate-limiting purposes.</li>
+                    </ul>
+
+                    <h3>2. How We Use Your Information</h3>
+                    <p>We use the collected information for the following purposes:</p>
+                    <ul>
+                        <li>To provide, maintain, and improve our API proxy service.</li>
+                        <li>To process payments and manage billing accounts.</li>
+                        <li>To monitor service performance, detect fraud, and enforce our Acceptable Use Policy.</li>
+                        <li>To communicate with you regarding service updates, outages, or changes to our policies.</li>
+                        <li>To comply with legal obligations and respond to lawful requests from authorities.</li>
+                    </ul>
+                    <p>We do <strong>not</strong> sell, rent, or share your personal information with third parties for their marketing purposes.</p>
+
+                    <h3>3. Data Storage & Security</h3>
+                    <p>All data is stored on encrypted servers located in the United States and European Union. We implement industry-standard security measures, including encryption at rest (AES-256) and in transit (TLS 1.3), to protect your information. Access to personal data is restricted to authorized personnel only. We retain account information for the duration of your account's active status plus 90 days after termination, after which it is securely deleted.</p>
+
+                    <h3>4. Cookie Policy</h3>
+                    <p>Our website uses minimal cookies for essential functionality, such as maintaining your login session and remembering your preferences. We do not use third-party tracking cookies or advertising cookies. You may disable cookies in your browser settings, though this may affect certain features of our dashboard.</p>
+
+                    <h3>5. Third-Party Services</h3>
+                    <p>Our service routes API requests to Third-Party AI providers. When you submit a request through our proxy, the content of that request is forwarded to the relevant Third-Party Service for processing. We encourage you to review the privacy policies of these providers. We use Stripe for payment processing; your payment information is handled directly by Stripe and is not stored on our servers.</p>
+
+                    <h3>6. Your Rights</h3>
+                    <p>You have the right to access, correct, or delete your personal information held by us. You may also request a copy of your data in a portable format. To exercise these rights, please contact us at the email address below. We will respond to your request within 30 days. If you are located in the European Economic Area, you have additional rights under the GDPR, including the right to object to processing and the right to lodge a complaint with a supervisory authority.</p>
+
+                    <h3>7. Contact</h3>
+                    <p>If you have questions or concerns about this Privacy Policy, please contact us at <strong>privacy@cbiapi.com</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 退款政策 -->
+        <section class="page-section" id="page-refund" aria-labelledby="refund-heading">
+            <div class="container container--narrow">
+                <div class="legal-content">
+                    <h2 id="refund-heading">Refund Policy</h2>
+                    <p class="last-updated">Last updated: May 2026</p>
+
+                    <h3>1. 7-Day Unconditional Refund</h3>
+                    <p>If you are not satisfied with our service for any reason, you may request a full refund within <strong>7 calendar days</strong> of your initial purchase. This applies to first-time subscriptions only. To initiate a refund, contact us at <strong>billing@cbiapi.com</strong> with your account details and order reference.</p>
+
+                    <h3>2. Pro-Rated Refunds After 7 Days</h3>
+                    <p>Refund requests submitted after the 7-day unconditional period but within the same billing cycle will be processed on a pro-rated basis. The refund amount is calculated based on the unused portion of your subscription, measured from the date of your refund request to the end of the current billing period. Tokens already consumed are non-refundable.</p>
+
+                    <h3>3. Processing Time</h3>
+                    <p>All approved refunds are processed within <strong>3 to 5 business days</strong>. The funds will be returned to the original payment method used at the time of purchase. Depending on your bank or card issuer, it may take additional time for the refund to appear on your statement.</p>
+
+                    <h3>4. Abuse of Refund Policy</h3>
+                    <p>We reserve the right to deny refund requests from users who we reasonably determine are abusing this policy. Abuse includes, but is not limited to, making repeated purchases followed by refund requests across multiple accounts, attempting to obtain refunds for services already substantially consumed, or filing fraudulent chargebacks without first contacting us. In such cases, the account may be permanently suspended.</p>
+
+                    <h3>5. Contact</h3>
+                    <p>For all refund inquiries, please email <strong>billing@cbiapi.com</strong>. We aim to respond within 24 hours on business days.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer" role="contentinfo">
+        <p>&copy; 2026 CBI API. All rights reserved. &mdash; cbiapi.com</p>
+    </footer>
+
+    <!-- Toast 提示 -->
+    <div class="toast" id="toast" role="status" aria-live="polite">🚀 Coming Soon — We're launching shortly!</div>
+
+    <script>
+        (function() {
+            // DOM 元素引用
+            const header = document.getElementById('header');
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            const navOverlay = document.getElementById('navOverlay');
+            const toast = document.getElementById('toast');
+
+            let toastTimer = null;
+            let isMenuOpen = false;
+
+            // 路由映射表
+            const hashToSectionId = {
+                'home': 'page-home',
+                'pricing': 'page-pricing',
+                'terms': 'page-terms',
+                'privacy': 'page-privacy',
+                'refund': 'page-refund',
+            };
+            const defaultPage = 'home';
+
+            function getCurrentPage() {
+                const hash = window.location.hash.replace('#', '').trim().toLowerCase();
+                if (hash && hashToSectionId[hash]) {
+                    return hash;
+                }
+                return defaultPage;
+            }
+
+            function navigateTo(pageName) {
+                const newHash = '#' + pageName;
+                if (window.location.hash !== newHash) {
+                    history.pushState(null, '', newHash);
+                }
+                switchPage(pageName);
+                closeMenu();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            function switchPage(pageName) {
+                const targetSectionId = hashToSectionId[pageName] || 'page-home';
+
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                const targetSection = document.getElementById(targetSectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    targetSection.style.animation = 'none';
+                    targetSection.offsetHeight;
+                    targetSection.style.animation = '';
+                }
+
+                document.querySelectorAll('.nav-links a[data-page]').forEach(anchor => {
+                    anchor.classList.remove('active');
+                    if (anchor.getAttribute('data-page') === pageName) {
+                        anchor.classList.add('active');
+                    }
+                });
+            }
+
+            function closeMenu() {
+                if (!isMenuOpen) return;
+                isMenuOpen = false;
+                navLinks.classList.remove('open');
+                navOverlay.classList.remove('show');
+                hamburger.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+                navOverlay.setAttribute('aria-hidden', 'true');
+            }
+
+            function openMenu() {
+                if (isMenuOpen) return;
+                isMenuOpen = true;
+                navLinks.classList.add('open');
+                navOverlay.classList.add('show');
+                hamburger.classList.add('active');
+                hamburger.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+                navOverlay.setAttribute('aria-hidden', 'false');
+            }
+
+            function toggleMenu() {
+                if (isMenuOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            }
+
+            // 绑定菜单事件
+            hamburger.addEventListener('click', toggleMenu);
+            navOverlay.addEventListener('click', closeMenu);
+
+            // 导航链接点击
+            document.querySelectorAll('.nav-links a[data-page]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageName = this.getAttribute('data-page');
+                    if (pageName) {
+                        navigateTo(pageName);
+                    }
+                });
+            });
+
+            // 浏览器前进/后退
+            window.addEventListener('hashchange', function() {
+                const pageName = getCurrentPage();
+                switchPage(pageName);
+                closeMenu();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // ESC 关闭菜单
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && isMenuOpen) {
+                    closeMenu();
+                }
+            });
+
+            // 滚动时导航栏样式变化
+            let scrollTicking = false;
+            window.addEventListener('scroll', function() {
+                if (!scrollTicking) {
+                    requestAnimationFrame(function() {
+                        if (window.scrollY > 20) {
+                            header.classList.add('scrolled');
+                        } else {
+                            header.classList.remove('scrolled');
+                        }
+                        scrollTicking = false;
+                    });
+                    scrollTicking = true;
+                }
+            });
+
+            // Toast 提示
+            window.showToast = function() {
+                if (toastTimer) {
+                    clearTimeout(toastTimer);
+                    toast.classList.remove('show');
+                }
+                void toast.offsetWidth;
+                toast.classList.add('show', 'success');
+                toastTimer = setTimeout(function() {
+                    toast.classList.remove('show');
+                    toastTimer = null;
+                }, 2500);
+            };
+
+            // 按钮涟漪效果 (事件委托)
+            function createRipple(event) {
+                const button = event.currentTarget;
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = event.clientX - rect.left - size / 2;
+                const y = event.clientY - rect.top - size / 2;
+
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+
+                button.appendChild(ripple);
+
+                ripple.addEventListener('animationend', function() {
+                    ripple.remove();
+                });
+            }
+
+            // 给所有按钮绑定涟漪
+            document.querySelectorAll('.btn-cta, .btn-subscribe').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    createRipple(e);
+                    // 如果是 subscribe 按钮，同时触发 toast
+                    if (this.classList.contains('btn-subscribe')) {
+                        showToast();
+                    }
+                });
+            });
+
+            // 初始化页面路由
+            const initialPage = getCurrentPage();
+            switchPage(initialPage);
+            if (window.location.hash.replace('#', '').trim().toLowerCase() !== initialPage) {
+                history.replaceState(null, '', '#' + initialPage);
+            }
+
+            // 处理 CTA 内部链接
+            document.querySelectorAll('a[href="#pricing"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navigateTo('pricing');
+                });
+            });
+
+            document.querySelector('.logo').addEventListener('click', function(e) {
+                e.preventDefault();
+                navigateTo('home');
+            });
+
+            console.log('🚀 CBI API — Landing page initialized with ripple effects.');
+        })();
+    </script>
+</body>
+</html>
