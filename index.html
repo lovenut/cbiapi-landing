@@ -3,8 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBI API — Stable, Affordable AI API Proxy</title>
-    <meta name="description" content="Direct access to OpenAI, Claude, DeepSeek, and more. Built for developers who need reliable AI API access.">
+    <title>CBI API — DeepSeek API Proxy, Optimized for China</title>
+    <meta name="description" content="CBI API — DeepSeek API proxy optimized for China. Fast, affordable access to DeepSeek V3.2 & V4. Join the waitlist.">
+    <meta name="keywords" content="DeepSeek API, DeepSeek proxy, AI API China, DeepSeek China, API proxy">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://cbiapi.com">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="CBI API — DeepSeek API Proxy, Optimized for China">
+    <meta property="og:description" content="Direct access to DeepSeek V3.2 & V4. Built for developers who need fast, affordable DeepSeek API access from China.">
+    <meta property="og:url" content="https://cbiapi.com">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CBI API — DeepSeek API Proxy, Optimized for China">
+    <meta name="twitter:description" content="Direct access to DeepSeek V3.2 & V4. Built for developers who need fast, affordable DeepSeek API access from China.">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "CBI API",
+            "description": "DeepSeek API proxy optimized for China. Fast, affordable access to DeepSeek V3.2 & V4.",
+            "url": "https://cbiapi.com",
+            "offers": [
+                {
+                    "@type": "Offer",
+                    "name": "Starter",
+                    "price": "7.99",
+                    "priceCurrency": "USD",
+                    "description": "300K tokens/month, DeepSeek V3.2 access"
+                },
+                {
+                    "@type": "Offer",
+                    "name": "Pro",
+                    "price": "19.99",
+                    "priceCurrency": "USD",
+                    "description": "3M tokens/month, DeepSeek V3.2 & V4 access"
+                },
+                {
+                    "@type": "Offer",
+                    "name": "Enterprise",
+                    "price": "69.99",
+                    "priceCurrency": "USD",
+                    "description": "30M tokens/month, full DeepSeek model access"
+                }
+            ]
+        }
+    </script>
+
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -56,7 +105,6 @@
             position: relative;
         }
 
-        /* 背景网格系统 */
         body::before {
             content: '';
             position: fixed;
@@ -73,7 +121,6 @@
             background-position: center center;
         }
 
-        /* 动态光晕球体 (环境粒子效果) */
         .ambient-orb {
             position: fixed;
             pointer-events: none;
@@ -125,7 +172,6 @@
             }
         }
 
-        /* 导航栏 - 透明毛玻璃效果 */
         .header {
             position: fixed;
             top: 0;
@@ -202,6 +248,7 @@
             transition: var(--transition-fast);
             white-space: nowrap;
             position: relative;
+            cursor: pointer;
         }
         .nav-links a:hover {
             color: #fff;
@@ -224,7 +271,6 @@
             background: var(--accent-gradient);
         }
 
-        /* 移动端汉堡菜单 */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -257,7 +303,6 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* 主内容区域 */
         .main-content {
             position: relative;
             z-index: 1;
@@ -265,7 +310,6 @@
             min-height: calc(100vh - 80px);
         }
 
-        /* 页面切换动画 */
         .page-section {
             display: none;
             animation: fadeSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -294,7 +338,6 @@
             max-width: 820px;
         }
 
-        /* 首页 Hero */
         .hero {
             text-align: center;
             padding: 60px 24px 40px;
@@ -354,7 +397,6 @@
             transform: translateY(-2px);
         }
 
-        /* 按钮涟漪动画 */
         .ripple {
             position: absolute;
             border-radius: 50%;
@@ -370,7 +412,6 @@
             }
         }
 
-        /* 特性卡片 (毛玻璃 + 发光边框) */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -430,7 +471,6 @@
             line-height: 1.5;
         }
 
-        /* 技术栈图标 */
         .tech-stack {
             display: flex;
             flex-wrap: wrap;
@@ -463,24 +503,11 @@
             border-radius: 50%;
             flex-shrink: 0;
         }
-        .tech-dot--openai {
+        .tech-dot--deepseek {
             background: #10a37f;
             box-shadow: 0 0 8px rgba(16, 163, 127, 0.6);
         }
-        .tech-dot--anthropic {
-            background: #d97757;
-            box-shadow: 0 0 8px rgba(217, 119, 87, 0.6);
-        }
-        .tech-dot--deepseek {
-            background: #4d8bf7;
-            box-shadow: 0 0 8px rgba(77, 139, 247, 0.6);
-        }
-        .tech-dot--google {
-            background: #4285f4;
-            box-shadow: 0 0 8px rgba(66, 133, 244, 0.6);
-        }
 
-        /* 定价卡片 */
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -609,7 +636,6 @@
             box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
         }
 
-        /* 法律文本页面 */
         .legal-content h2 {
             font-size: 1.6rem;
             font-weight: 700;
@@ -645,7 +671,110 @@
             font-style: italic;
         }
 
-        /* Toast 消息提示 */
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background: rgba(20, 20, 30, 0.9);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            padding: 36px 28px;
+            max-width: 440px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px var(--accent-glow);
+            text-align: center;
+            animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .modal h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .modal p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        .modal-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            outline: none;
+            transition: var(--transition-fast);
+            font-family: var(--font-stack);
+        }
+        .modal-input:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+        .modal-btn {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            background: var(--accent-gradient);
+            box-shadow: 0 4px 16px var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+        }
+        .modal-btn:hover {
+            background: var(--accent-gradient-hover);
+            box-shadow: 0 8px 28px rgba(124, 58, 237, 0.4);
+        }
+        .modal-success {
+            display: none;
+            color: #10a37f;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 14px;
+        }
+        .modal-success.show {
+            display: block;
+        }
+
         .toast {
             position: fixed;
             bottom: 30px;
@@ -660,7 +789,7 @@
             border-radius: 12px;
             font-weight: 600;
             font-size: 0.9rem;
-            z-index: 2000;
+            z-index: 3000;
             pointer-events: none;
             transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
@@ -673,7 +802,6 @@
             border-color: rgba(124, 58, 237, 0.5);
         }
 
-        /* 页脚 */
         .footer {
             text-align: center;
             padding: 24px;
@@ -684,7 +812,6 @@
             z-index: 1;
         }
 
-        /* 响应式设计 */
         @media (max-width: 768px) {
             .nav-links {
                 position: fixed;
@@ -756,7 +883,6 @@
             }
         }
 
-        /* 移动端菜单遮罩层 */
         .nav-overlay {
             display: none;
             position: fixed;
@@ -775,15 +901,12 @@
 </head>
 <body>
 
-    <!-- 环境光效球体 -->
     <div class="ambient-orb ambient-orb--top" aria-hidden="true"></div>
     <div class="ambient-orb ambient-orb--bottom" aria-hidden="true"></div>
     <div class="ambient-orb ambient-orb--mid" aria-hidden="true"></div>
 
-    <!-- 移动端菜单遮罩 -->
     <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
-    <!-- 顶部导航栏 -->
     <header class="header" id="header">
         <div class="header-inner">
             <a href="#home" class="logo" aria-label="CBI API Home">
@@ -802,34 +925,25 @@
                     <li role="none"><a href="#terms" role="menuitem" data-page="terms">Terms</a></li>
                     <li role="none"><a href="#privacy" role="menuitem" data-page="privacy">Privacy</a></li>
                     <li role="none"><a href="#refund" role="menuitem" data-page="refund">Refund</a></li>
+                    <li role="none"><a id="navContact" role="menuitem" data-page="contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- 主内容区 -->
     <main class="main-content" id="mainContent">
 
         <!-- 首页 -->
         <section class="page-section active" id="page-home" aria-labelledby="home-heading">
             <div class="hero">
-                <span class="hero-badge">🚀 AI API Proxy Service</span>
-                <h1 id="home-heading">CBI API — Stable, Affordable AI API Proxy</h1>
-                <p>Direct access to OpenAI, Claude, DeepSeek, and more. Built for developers who need reliable AI API access without the overhead.</p>
-                <a href="#pricing" class="btn-cta">Get Started Free</a>
+                <span class="hero-badge">🚀 DeepSeek API Proxy</span>
+                <h1 id="home-heading">CBI API — DeepSeek API Proxy, Optimized for China</h1>
+                <p>Direct access to DeepSeek V3.2 & V4. Built for developers who need fast, affordable DeepSeek API access from China.</p>
+                <button class="btn-cta" id="heroWaitlistBtn">Join Waitlist</button>
 
                 <div class="tech-stack" aria-label="Supported AI providers">
-                    <span class="tech-tag" aria-label="OpenAI">
-                        <span class="tech-dot tech-dot--openai" aria-hidden="true"></span> OpenAI
-                    </span>
-                    <span class="tech-tag" aria-label="Anthropic Claude">
-                        <span class="tech-dot tech-dot--anthropic" aria-hidden="true"></span> Anthropic Claude
-                    </span>
                     <span class="tech-tag" aria-label="DeepSeek">
                         <span class="tech-dot tech-dot--deepseek" aria-hidden="true"></span> DeepSeek
-                    </span>
-                    <span class="tech-tag" aria-label="Google AI">
-                        <span class="tech-dot tech-dot--google" aria-hidden="true"></span> Google AI
                     </span>
                 </div>
             </div>
@@ -837,19 +951,19 @@
             <div class="container">
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon" aria-hidden="true">🛡️</div>
-                        <h3>99.9% Uptime</h3>
-                        <p>Enterprise-grade infrastructure with automatic failover across multiple regions. Your requests are always routed to the healthiest endpoint.</p>
+                        <div class="feature-icon" aria-hidden="true">🚀</div>
+                        <h3>Fast Access from China</h3>
+                        <p>Optimized routing ensures low-latency connections to DeepSeek API from mainland China. No VPN needed.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon" aria-hidden="true">💰</div>
                         <h3>50% Lower Cost</h3>
-                        <p>Optimized intelligent routing reduces your API costs by up to 50%. Pay only for what you use with no hidden fees or markup surprises.</p>
+                        <p>Pure DeepSeek proxy with minimal markup. Pay significantly less than direct DeepSeek API pricing.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon" aria-hidden="true">⚡</div>
                         <h3>Instant Setup</h3>
-                        <p>One API key, universal compatibility with all major AI models. Drop-in replacement — integrate in under 5 minutes with zero code changes.</p>
+                        <p>One API key, OpenAI-compatible endpoint. Drop-in replacement — integrate in under 5 minutes.</p>
                     </div>
                 </div>
             </div>
@@ -864,48 +978,48 @@
                     <p>All plans include universal API access. Upgrade or downgrade anytime.</p>
                 </div>
                 <div class="pricing-grid">
-                    <!-- Starter -->
                     <div class="pricing-card">
                         <h3>Starter</h3>
-                        <div class="pricing-amount">$9.99</div>
+                        <div class="pricing-amount">$7.99</div>
                         <div class="pricing-period">/ month</div>
                         <ul class="pricing-features">
-                            <li>500K tokens / month</li>
+                            <li>300K tokens / month</li>
                             <li>3 API keys</li>
-                            <li>Basic support</li>
-                            <li>99.5% uptime SLA</li>
+                            <li>DeepSeek V3.2 access</li>
+                            <li>Email support</li>
+                            <li>99.5% uptime</li>
                         </ul>
-                        <button class="btn-subscribe btn-subscribe--outline">Subscribe</button>
+                        <button class="btn-subscribe btn-subscribe--outline waitlist-btn">Join Waitlist</button>
                     </div>
-                    <!-- Pro (推荐) -->
                     <div class="pricing-card pricing-card--featured">
                         <span class="pricing-badge">⭐ Recommended</span>
                         <h3>Pro</h3>
-                        <div class="pricing-amount">$29.99</div>
+                        <div class="pricing-amount">$19.99</div>
                         <div class="pricing-period">/ month</div>
                         <ul class="pricing-features">
-                            <li>5M tokens / month</li>
+                            <li>3M tokens / month</li>
                             <li>10 API keys</li>
+                            <li>DeepSeek V3.2 & V4 access</li>
                             <li>Priority support</li>
-                            <li>99.9% uptime SLA</li>
+                            <li>99.9% uptime</li>
                             <li>Load balancing</li>
                         </ul>
-                        <button class="btn-subscribe">Subscribe</button>
+                        <button class="btn-subscribe waitlist-btn">Join Waitlist</button>
                     </div>
-                    <!-- Enterprise -->
                     <div class="pricing-card">
                         <h3>Enterprise</h3>
-                        <div class="pricing-amount">$99.99</div>
+                        <div class="pricing-amount">$69.99</div>
                         <div class="pricing-period">/ month</div>
                         <ul class="pricing-features">
-                            <li>50M tokens / month</li>
+                            <li>30M tokens / month</li>
                             <li>Unlimited API keys</li>
+                            <li>Full DeepSeek model access</li>
                             <li>Dedicated support</li>
-                            <li>99.99% uptime SLA</li>
-                            <li>Custom routing rules</li>
-                            <li>Dedicated nodes</li>
+                            <li>99.99% uptime</li>
+                            <li>Custom routing</li>
+                            <li>Dedicated proxy node</li>
                         </ul>
-                        <button class="btn-subscribe btn-subscribe--outline">Subscribe</button>
+                        <button class="btn-subscribe btn-subscribe--outline waitlist-btn">Join Waitlist</button>
                     </div>
                 </div>
             </div>
@@ -917,44 +1031,34 @@
                 <div class="legal-content">
                     <h2 id="terms-heading">Terms of Service</h2>
                     <p class="last-updated">Last updated: May 2026</p>
-
                     <h3>1. Service Overview</h3>
-                    <p>CBI API ("we," "us," or "our") provides an API proxy service that enables developers to access third-party AI models, including but not limited to OpenAI, Anthropic Claude, DeepSeek, and Google AI (collectively, "Third-Party Services"). Our service acts as an intermediary, routing API requests from our customers to these Third-Party Services. We do not own, operate, or control the underlying AI models.</p>
-
+                    <p>CBI API ("we," "us," or "our") provides an API proxy service that enables developers to access DeepSeek AI models. Our service acts as an intermediary, routing API requests from our customers to DeepSeek. We do not own, operate, or control the underlying AI models.</p>
                     <h3>2. Account Registration & Responsibilities</h3>
                     <p>To use our services, you must register for an account and provide accurate, complete, and current information. You are solely responsible for maintaining the confidentiality of your API keys and account credentials. Any activity that occurs under your account is your responsibility. You must notify us immediately of any unauthorized use of your account or any other breach of security. We reserve the right to suspend or terminate accounts that provide false or misleading information.</p>
-
                     <h3>3. Acceptable Use Policy</h3>
                     <p>You agree not to use the CBI API service for any unlawful, harmful, or abusive purposes. Specifically, you shall not:</p>
                     <ul>
                         <li>Use the service to generate, distribute, or facilitate illegal content, hate speech, harassment, or material that infringes on intellectual property rights.</li>
                         <li>Engage in automated scraping, excessive crawling, or any activity that imposes an unreasonable load on our infrastructure.</li>
                         <li>Attempt to bypass rate limits, circumvent authentication mechanisms, or reverse-engineer any part of the service.</li>
-                        <li>Use the service for any activity that violates the terms of service of the underlying Third-Party Services.</li>
+                        <li>Use the service for any activity that violates the terms of service of DeepSeek.</li>
                         <li>Resell, sublicense, or redistribute the API access without explicit written authorization from us.</li>
                     </ul>
                     <p>We reserve the right to investigate and take appropriate action against any account that violates this policy, including immediate suspension or termination without prior notice.</p>
-
                     <h3>4. Billing & Payment Terms</h3>
                     <p>All fees are billed in advance on a monthly basis, unless otherwise agreed upon in writing. Payments are due at the start of each billing period. Token usage beyond your plan's allowance may result in overage charges or service throttling, depending on your plan. All prices are listed in US Dollars (USD) and are exclusive of applicable taxes. We reserve the right to modify pricing with 30 days' notice to active subscribers.</p>
-
                     <h3>5. Service Level Agreement (SLA)</h3>
                     <p>We strive to maintain the uptime percentages specified in each plan. Our SLA commitments are measured on a monthly basis. If we fail to meet the guaranteed uptime for your plan, you may be eligible for service credits. SLA credits are calculated as a percentage of your monthly fee and must be requested within 14 days of the incident. Details of SLA credit calculations are available upon request.</p>
-
                     <h3>6. Termination</h3>
                     <p>Either party may terminate the agreement at any time. Upon termination, your access to the API will be revoked, and any remaining prepaid balance for the current billing period will be handled according to our Refund Policy. We reserve the right to terminate accounts immediately in cases of Terms of Service violations, fraudulent activity, or non-payment. Provisions regarding liability, disclaimers, and any obligations that naturally survive termination shall remain in effect.</p>
-
                     <h3>7. Disclaimer of Warranties</h3>
-                    <p>The CBI API service is provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, express or implied, regarding the reliability, accuracy, or availability of the service or the Third-Party Services accessed through it. We disclaim all implied warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not guarantee that the service will be uninterrupted, error-free, or completely secure.</p>
-
+                    <p>The CBI API service is provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, express or implied, regarding the reliability, accuracy, or availability of the service or the DeepSeek models accessed through it. We disclaim all implied warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not guarantee that the service will be uninterrupted, error-free, or completely secure.</p>
                     <h3>8. Limitation of Liability</h3>
                     <p>To the fullest extent permitted by law, CBI API shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or business opportunities, arising from your use of or inability to use the service. Our total aggregate liability for any claims related to the service shall not exceed the amount paid by you in the 12 months preceding the claim.</p>
-
                     <h3>9. Governing Law</h3>
                     <p>These Terms of Service shall be governed by and interpreted in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law principles. Any disputes arising from these terms shall be resolved exclusively in the courts located in Delaware. Users accessing the service from outside the United States are responsible for compliance with local laws.</p>
-
                     <h3>10. Contact</h3>
-                    <p>For questions regarding these Terms of Service, please contact us at <strong>legal@cbiapi.com</strong>.</p>
+                    <p>For questions regarding these Terms of Service, please contact us at <strong>contact@cbiapi.com</strong>.</p>
                 </div>
             </div>
         </section>
@@ -965,7 +1069,6 @@
                 <div class="legal-content">
                     <h2 id="privacy-heading">Privacy Policy</h2>
                     <p class="last-updated">Last updated: May 2026</p>
-
                     <h3>1. Information We Collect</h3>
                     <p>When you use CBI API, we collect the following types of information:</p>
                     <ul>
@@ -973,7 +1076,6 @@
                         <li><strong>Usage Data:</strong> API request metadata, including timestamps, token counts, endpoint usage, and error logs. We do <em>not</em> store the content of your API requests or responses beyond what is necessary for real-time routing.</li>
                         <li><strong>Technical Data:</strong> IP addresses, browser user-agent strings, and connection timestamps for security and rate-limiting purposes.</li>
                     </ul>
-
                     <h3>2. How We Use Your Information</h3>
                     <p>We use the collected information for the following purposes:</p>
                     <ul>
@@ -984,21 +1086,16 @@
                         <li>To comply with legal obligations and respond to lawful requests from authorities.</li>
                     </ul>
                     <p>We do <strong>not</strong> sell, rent, or share your personal information with third parties for their marketing purposes.</p>
-
                     <h3>3. Data Storage & Security</h3>
                     <p>All data is stored on encrypted servers located in the United States and European Union. We implement industry-standard security measures, including encryption at rest (AES-256) and in transit (TLS 1.3), to protect your information. Access to personal data is restricted to authorized personnel only. We retain account information for the duration of your account's active status plus 90 days after termination, after which it is securely deleted.</p>
-
                     <h3>4. Cookie Policy</h3>
                     <p>Our website uses minimal cookies for essential functionality, such as maintaining your login session and remembering your preferences. We do not use third-party tracking cookies or advertising cookies. You may disable cookies in your browser settings, though this may affect certain features of our dashboard.</p>
-
                     <h3>5. Third-Party Services</h3>
-                    <p>Our service routes API requests to Third-Party AI providers. When you submit a request through our proxy, the content of that request is forwarded to the relevant Third-Party Service for processing. We encourage you to review the privacy policies of these providers. We use Stripe for payment processing; your payment information is handled directly by Stripe and is not stored on our servers.</p>
-
+                    <p>Our service routes API requests to DeepSeek. When you submit a request through our proxy, the content of that request is forwarded to DeepSeek for processing. We encourage you to review DeepSeek's privacy policy. We use Stripe for payment processing; your payment information is handled directly by Stripe and is not stored on our servers.</p>
                     <h3>6. Your Rights</h3>
                     <p>You have the right to access, correct, or delete your personal information held by us. You may also request a copy of your data in a portable format. To exercise these rights, please contact us at the email address below. We will respond to your request within 30 days. If you are located in the European Economic Area, you have additional rights under the GDPR, including the right to object to processing and the right to lodge a complaint with a supervisory authority.</p>
-
                     <h3>7. Contact</h3>
-                    <p>If you have questions or concerns about this Privacy Policy, please contact us at <strong>privacy@cbiapi.com</strong>.</p>
+                    <p>If you have questions or concerns about this Privacy Policy, please contact us at <strong>contact@cbiapi.com</strong>.</p>
                 </div>
             </div>
         </section>
@@ -1009,38 +1106,51 @@
                 <div class="legal-content">
                     <h2 id="refund-heading">Refund Policy</h2>
                     <p class="last-updated">Last updated: May 2026</p>
-
                     <h3>1. 7-Day Unconditional Refund</h3>
-                    <p>If you are not satisfied with our service for any reason, you may request a full refund within <strong>7 calendar days</strong> of your initial purchase. This applies to first-time subscriptions only. To initiate a refund, contact us at <strong>billing@cbiapi.com</strong> with your account details and order reference.</p>
-
+                    <p>If you are not satisfied with our service for any reason, you may request a full refund within <strong>7 calendar days</strong> of your initial purchase. This applies to first-time subscriptions only. To initiate a refund, contact us at <strong>contact@cbiapi.com</strong> with your account details and order reference.</p>
                     <h3>2. Pro-Rated Refunds After 7 Days</h3>
                     <p>Refund requests submitted after the 7-day unconditional period but within the same billing cycle will be processed on a pro-rated basis. The refund amount is calculated based on the unused portion of your subscription, measured from the date of your refund request to the end of the current billing period. Tokens already consumed are non-refundable.</p>
-
                     <h3>3. Processing Time</h3>
                     <p>All approved refunds are processed within <strong>3 to 5 business days</strong>. The funds will be returned to the original payment method used at the time of purchase. Depending on your bank or card issuer, it may take additional time for the refund to appear on your statement.</p>
-
                     <h3>4. Abuse of Refund Policy</h3>
                     <p>We reserve the right to deny refund requests from users who we reasonably determine are abusing this policy. Abuse includes, but is not limited to, making repeated purchases followed by refund requests across multiple accounts, attempting to obtain refunds for services already substantially consumed, or filing fraudulent chargebacks without first contacting us. In such cases, the account may be permanently suspended.</p>
-
                     <h3>5. Contact</h3>
-                    <p>For all refund inquiries, please email <strong>billing@cbiapi.com</strong>. We aim to respond within 24 hours on business days.</p>
+                    <p>For all refund inquiries, please email <strong>contact@cbiapi.com</strong>. We aim to respond within 24 hours on business days.</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- 页脚 -->
     <footer class="footer" role="contentinfo">
         <p>&copy; 2026 CBI API. All rights reserved. &mdash; cbiapi.com</p>
     </footer>
 
-    <!-- Toast 提示 -->
-    <div class="toast" id="toast" role="status" aria-live="polite">🚀 Coming Soon — We're launching shortly!</div>
+    <!-- Waitlist Modal -->
+    <div class="modal-overlay" id="waitlistModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal">
+            <h3 id="modalTitle">Join the Waitlist</h3>
+            <p>Enter your email to get early access.</p>
+            <input type="email" class="modal-input" id="waitlistEmail" placeholder="Enter your email" autocomplete="email">
+            <button class="modal-btn" id="submitWaitlist">Submit</button>
+            <div class="modal-success" id="waitlistSuccess">🎉 You're on the list! We'll notify you when we launch.</div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal-overlay" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+        <div class="modal">
+            <h3 id="contactModalTitle">Contact Us</h3>
+            <p>📧 <strong>contact@cbiapi.com</strong></p>
+            <p style="font-size:0.9rem; color: var(--text-muted);">⏱ Response within 24 hours</p>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
         (function() {
-            // DOM 元素引用
+            // DOM 元素
             const header = document.getElementById('header');
             const hamburger = document.getElementById('hamburger');
             const navLinks = document.getElementById('navLinks');
@@ -1050,7 +1160,6 @@
             let toastTimer = null;
             let isMenuOpen = false;
 
-            // 路由映射表
             const hashToSectionId = {
                 'home': 'page-home',
                 'pricing': 'page-pricing',
@@ -1080,23 +1189,17 @@
 
             function switchPage(pageName) {
                 const targetSectionId = hashToSectionId[pageName] || 'page-home';
-
-                document.querySelectorAll('.page-section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                const targetSection = document.getElementById(targetSectionId);
-                if (targetSection) {
-                    targetSection.classList.add('active');
-                    targetSection.style.animation = 'none';
-                    targetSection.offsetHeight;
-                    targetSection.style.animation = '';
+                document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+                const target = document.getElementById(targetSectionId);
+                if (target) {
+                    target.classList.add('active');
+                    target.style.animation = 'none';
+                    target.offsetHeight;
+                    target.style.animation = '';
                 }
-
-                document.querySelectorAll('.nav-links a[data-page]').forEach(anchor => {
-                    anchor.classList.remove('active');
-                    if (anchor.getAttribute('data-page') === pageName) {
-                        anchor.classList.add('active');
-                    }
+                document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+                    a.classList.remove('active');
+                    if (a.getAttribute('data-page') === pageName) a.classList.add('active');
                 });
             }
 
@@ -1122,127 +1225,168 @@
                 navOverlay.setAttribute('aria-hidden', 'false');
             }
 
-            function toggleMenu() {
-                if (isMenuOpen) {
-                    closeMenu();
-                } else {
-                    openMenu();
-                }
-            }
-
-            // 绑定菜单事件
-            hamburger.addEventListener('click', toggleMenu);
+            hamburger.addEventListener('click', () => isMenuOpen ? closeMenu() : openMenu());
             navOverlay.addEventListener('click', closeMenu);
 
-            // 导航链接点击
-            document.querySelectorAll('.nav-links a[data-page]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
+            document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+                a.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const pageName = this.getAttribute('data-page');
-                    if (pageName) {
-                        navigateTo(pageName);
+                    const page = this.getAttribute('data-page');
+                    if (page === 'contact') {
+                        openContactModal();
+                        return;
                     }
+                    if (page) navigateTo(page);
                 });
             });
 
-            // 浏览器前进/后退
-            window.addEventListener('hashchange', function() {
-                const pageName = getCurrentPage();
-                switchPage(pageName);
+            window.addEventListener('hashchange', () => {
+                switchPage(getCurrentPage());
                 closeMenu();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            // ESC 关闭菜单
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && isMenuOpen) {
-                    closeMenu();
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') {
+                    if (isMenuOpen) closeMenu();
+                    closeWaitlistModal();
+                    closeContactModal();
                 }
             });
 
-            // 滚动时导航栏样式变化
             let scrollTicking = false;
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', () => {
                 if (!scrollTicking) {
-                    requestAnimationFrame(function() {
-                        if (window.scrollY > 20) {
-                            header.classList.add('scrolled');
-                        } else {
-                            header.classList.remove('scrolled');
-                        }
+                    requestAnimationFrame(() => {
+                        header.classList.toggle('scrolled', window.scrollY > 20);
                         scrollTicking = false;
                     });
                     scrollTicking = true;
                 }
             });
 
-            // Toast 提示
-            window.showToast = function() {
-                if (toastTimer) {
-                    clearTimeout(toastTimer);
-                    toast.classList.remove('show');
-                }
+            function showToast(msg) {
+                if (toastTimer) clearTimeout(toastTimer);
+                toast.textContent = msg;
+                toast.classList.remove('show');
                 void toast.offsetWidth;
                 toast.classList.add('show', 'success');
-                toastTimer = setTimeout(function() {
+                toastTimer = setTimeout(() => {
                     toast.classList.remove('show');
                     toastTimer = null;
                 }, 2500);
-            };
+            }
 
-            // 按钮涟漪效果 (事件委托)
-            function createRipple(event) {
-                const button = event.currentTarget;
-                const rect = button.getBoundingClientRect();
+            // 按钮涟漪
+            function createRipple(e) {
+                const btn = e.currentTarget;
+                const rect = btn.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height);
-                const x = event.clientX - rect.left - size / 2;
-                const y = event.clientY - rect.top - size / 2;
-
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
                 const ripple = document.createElement('span');
-                ripple.classList.add('ripple');
+                ripple.className = 'ripple';
                 ripple.style.width = ripple.style.height = `${size}px`;
                 ripple.style.left = `${x}px`;
                 ripple.style.top = `${y}px`;
-
-                button.appendChild(ripple);
-
-                ripple.addEventListener('animationend', function() {
-                    ripple.remove();
-                });
+                btn.appendChild(ripple);
+                ripple.addEventListener('animationend', () => ripple.remove());
             }
 
-            // 给所有按钮绑定涟漪
-            document.querySelectorAll('.btn-cta, .btn-subscribe').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    createRipple(e);
-                    // 如果是 subscribe 按钮，同时触发 toast
-                    if (this.classList.contains('btn-subscribe')) {
-                        showToast();
-                    }
-                });
+            document.querySelectorAll('.btn-cta, .btn-subscribe, .modal-btn').forEach(btn => {
+                btn.addEventListener('click', createRipple);
             });
 
-            // 初始化页面路由
+            // ========== Waitlist 弹窗 ==========
+            const waitlistModal = document.getElementById('waitlistModal');
+            const waitlistEmail = document.getElementById('waitlistEmail');
+            const waitlistSuccess = document.getElementById('waitlistSuccess');
+            const submitBtn = document.getElementById('submitWaitlist');
+            const STORAGE_KEY = 'cbi_waitlist_submitted';
+
+            function openWaitlistModal() {
+                if (localStorage.getItem(STORAGE_KEY)) {
+                    showToast('🎉 You\'re already on the list!');
+                    return;
+                }
+                waitlistModal.classList.add('active');
+                waitlistEmail.value = '';
+                waitlistSuccess.classList.remove('show');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => waitlistEmail.focus(), 100);
+            }
+
+            function closeWaitlistModal() {
+                waitlistModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            document.getElementById('heroWaitlistBtn').addEventListener('click', openWaitlistModal);
+            document.querySelectorAll('.waitlist-btn').forEach(b => b.addEventListener('click', openWaitlistModal));
+
+            waitlistModal.addEventListener('click', function(e) {
+                if (e.target === waitlistModal) closeWaitlistModal();
+            });
+
+            submitBtn.addEventListener('click', function() {
+                const email = waitlistEmail.value.trim();
+                if (!email || !email.includes('@') || !email.includes('.')) {
+                    showToast('Please enter a valid email address.');
+                    return;
+                }
+                localStorage.setItem(STORAGE_KEY, email);
+                waitlistSuccess.classList.add('show');
+                waitlistEmail.style.display = 'none';
+                submitBtn.style.display = 'none';
+                setTimeout(closeWaitlistModal, 2000);
+            });
+
+            waitlistEmail.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') submitBtn.click();
+            });
+
+            // ========== Contact 弹窗 ==========
+            const contactModal = document.getElementById('contactModal');
+
+            function openContactModal() {
+                contactModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeContactModal() {
+                contactModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            document.getElementById('navContact').addEventListener('click', function(e) {
+                e.preventDefault();
+                openContactModal();
+            });
+
+            contactModal.addEventListener('click', function(e) {
+                if (e.target === contactModal) closeContactModal();
+            });
+
+            // 初始化路由
             const initialPage = getCurrentPage();
             switchPage(initialPage);
             if (window.location.hash.replace('#', '').trim().toLowerCase() !== initialPage) {
                 history.replaceState(null, '', '#' + initialPage);
             }
 
-            // 处理 CTA 内部链接
             document.querySelectorAll('a[href="#pricing"]').forEach(link => {
-                link.addEventListener('click', function(e) {
+                link.addEventListener('click', e => {
                     e.preventDefault();
                     navigateTo('pricing');
                 });
             });
 
-            document.querySelector('.logo').addEventListener('click', function(e) {
+            document.querySelector('.logo').addEventListener('click', e => {
                 e.preventDefault();
                 navigateTo('home');
             });
 
-            console.log('🚀 CBI API — Landing page initialized with ripple effects.');
+            console.log('🚀 CBI API — DeepSeek Proxy landing page ready.');
         })();
     </script>
 </body>
